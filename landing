@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abriendo Telegram...</title>
+    <style>
+        body { font-family: sans-serif; background-color: #0e1621; color: white; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; }
+        .loader { border: 4px solid #f3f3f3; border-top: 4px solid #0088cc; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin-bottom: 20px; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .btn { background-color: #0088cc; color: white; padding: 15px 30px; border-radius: 10px; text-decoration: none; font-weight: bold; display: none; }
+    </style>
+</head>
+<body>
+
+    <div id="loading-ui">
+        <div class="loader"></div>
+        <p>Redireccionando a Telegram...</p>
+    </div>
+
+    <a href="https://t.me/ericksystem_software" id="manual-btn" class="btn">CLIC AQUÍ SI NO ABRE</a>
+
+    <script>
+        const tgLink = "t.me/ericksystem_software";
+        const fullTgUrl = "https://" + tgLink;
+        const ua = navigator.userAgent || navigator.vendor || window.opera;
+
+        function redirect() {
+            // ESTRATEGIA PARA ANDROID
+            if (/android/i.test(ua)) {
+                // Forzamos la apertura en el navegador externo usando el protocolo intent
+                window.location.href = `intent://${tgLink}#Intent;scheme=https;package=com.android.chrome;end`;
+            } 
+            // ESTRATEGIA PARA IOS (iPhone/iPad)
+            else if (/iPad|iPhone|iPod/.test(ua) && !window.MSStream) {
+                // En iOS, intentamos abrir el enlace directo. 
+                // Si está en TikTok, el usuario verá el botón de "Abrir" de la propia app.
+                window.location.href = fullTgUrl;
+                document.getElementById('manual-btn').style.display = 'inline-block';
+            } 
+            // PC u otros
+            else {
+                window.location.href = fullTgUrl;
+            }
+        }
+
+        // Ejecutar redirección al cargar
+        setTimeout(redirect, 500);
+    </script>
+</body>
+</html>
